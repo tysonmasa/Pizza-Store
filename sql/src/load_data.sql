@@ -1,20 +1,20 @@
 /* Replace the location to where you saved the data files*/
 COPY Users
-FROM 'REPLACE PATH HERE/users.csv'
+FROM '/home/csmajs/tsaka013/project/data/users.csv'
 WITH DELIMITER ',' CSV HEADER;
 
 COPY Items
-FROM 'REPLACE PATH HERE/items.csv'
+FROM '/home/csmajs/tsaka013/project/data/items.csv'
 WITH DELIMITER ',' CSV HEADER;
 
 COPY Store
-FROM 'REPLACE PATH HERE/store.csv'
+FROM '/home/csmajs/tsaka013/project/data/store.csv'
 WITH DELIMITER ',' CSV HEADER;
 
 COPY FoodOrder
-FROM 'REPLACE PATH HERE/foodorder.csv'
+FROM '/home/csmajs/tsaka013/project/data/foodorder.csv'
 WITH DELIMITER ',' CSV HEADER;
 
 COPY ItemsInOrder
-FROM 'REPLACE PATH HERE/itemsinorder.csv'
+FROM '/home/csmajs/tsaka013/project/data/itemsinorder.csv'
 WITH DELIMITER ',' CSV HEADER;
