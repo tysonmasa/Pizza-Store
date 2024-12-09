@@ -291,8 +291,8 @@ public class PizzaStore {
                    case 2: updateProfile(esql); break;
                    case 3: viewMenu(esql); break;
                    case 4: placeOrder(esql); break;
-                   case 5: viewAllOrders(esql); break;
-                   case 6: viewRecentOrders(esql); break;
+                   case 5: viewAllOrders(esql, authorisedUser); break;
+                   case 6: viewRecentOrders(esql, authorisedUser); break;
                    case 7: viewOrderInfo(esql); break;
                    case 8: viewStores(esql); break;
                    case 9: updateOrderStatus(esql); break;
@@ -362,7 +362,9 @@ public class PizzaStore {
     * @return User login or null is the user does not exist
     **/
    public static String LogIn(PizzaStore esql){
-      return null;
+      String login = "testuser";
+      System.out.println(login);
+      return login;
    }//end
 
 // Rest of the functions definition go in here
@@ -371,8 +373,47 @@ public class PizzaStore {
    public static void updateProfile(PizzaStore esql) {}
    public static void viewMenu(PizzaStore esql) {}
    public static void placeOrder(PizzaStore esql) {}
-   public static void viewAllOrders(PizzaStore esql) {}
-   public static void viewRecentOrders(PizzaStore esql) {}
+   public static void viewAllOrders(PizzaStore esql, String login) {//see orderID history
+      try{
+         System.out.println("as user " + login);
+         String rolequery = 
+         "SELECT * " +
+         "FROM Users " +
+         "WHERE role = customer and login = " + login;
+         int isCustomer = esql.executeQuery(rolequery);
+
+         if (isCustomer) {
+            String query = 
+            "SELECT orderID " +
+            "FROM FoodOrder F " +
+            "WHERE login = " + login;
+         }
+         else {
+            String query = 
+            "SELECT orderID " +
+            "FROM FoodOrder F " +
+            "WHERE login = ";
+            System.out.print("\tlogin name: ");
+            String input = in.readLine();
+            query += input;
+         }
+         
+         int rowCount = esql.executeQuery(query);
+         System.out.println ("total row(s): " + rowCount);
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+   public static void viewRecentOrders(PizzaStore esql, String login) {//see recent 5 orderids
+      System.out.println("as user " + login);
+      String rolequery = 
+      "SELECT * " +
+      "FROM Users " +
+      "WHERE role = customer and login = " + login;
+      int isCustomer = esql.executeQuery(rolequery);
+
+      //get first 5 order id's
+   }
    public static void viewOrderInfo(PizzaStore esql) {}
    public static void viewStores(PizzaStore esql) {}
    public static void updateOrderStatus(PizzaStore esql) {}
