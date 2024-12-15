@@ -542,7 +542,49 @@ public class PizzaStore {
                      }                     
                   }
                }  
+                  /* output = esql.executeQueryAndReturnResult(query);
+               // Iterate through the result set
+                  for (List<String> row1 : output) {
+                  // Extract the values for password, favorite items, and phone number
+                     password = row1.get(0);  // First column: password
+                     favoriteItems = row1.get(1);  // Second column: favorite items
+                     phoneNum = row1.get(2);  // Third column: phone number
+                     role = row1.get(3);
+                     String login = row1.get(4); 
 
+                     // Print each piece of information on a new line
+                     System.out.println("---------");
+                     System.out.println("INFORMATION");
+                     System.out.println("User: " + login);
+                     System.out.println("Password: " + password);
+                     System.out.println("Favorite Item: " + favoriteItems);
+                     System.out.println("Phone Number: " + phoneNum);
+                     System.out.println("Role: " + role);
+                  } */
+               
+
+               /* System.out.println("Select the user whose information you want to see");
+               String user = in.readLine();
+               query = "SELECT password, favoriteItems, phoneNum, role, login FROM Users WHERE login = '" + user + "'";
+               output = esql.executeQueryAndReturnResult(query);
+            // Iterate through the result set
+            for (List<String> row1 : output) {
+               // Extract the values for password, favorite items, and phone number
+               password = row1.get(0);  // First column: password
+               favoriteItems = row1.get(1);  // Second column: favorite items
+               phoneNum = row1.get(2);  // Third column: phone number
+               role = row1.get(3);
+               String login = row1.get(4); 
+
+               // Print each piece of information on a new line
+               System.out.println("---------");
+               System.out.println("INFORMATION");
+               System.out.println("User: " + login);
+               System.out.println("Password: " + password);
+               System.out.println("Favorite Item: " + favoriteItems);
+               System.out.println("Phone Number: " + phoneNum);
+               System.out.println("Role: " + role);
+               } */
                //System.out.println();  // Adds a blank line for separation between records
                }
                        
@@ -571,6 +613,32 @@ public class PizzaStore {
             }           
          }
          }
+         
+
+
+
+/*          String query = "SELECT password, favoriteItems, phoneNum, role FROM Users WHERE login = '" + authorisedUser + "'";
+         List<List<String>> output = esql.executeQueryAndReturnResult(query);
+            // Iterate through the result set
+            for (List<String> row : output) {
+               // Extract the values for password, favorite items, and phone number
+               String password = row.get(0);  // First column: password
+               String favoriteItems = row.get(1);  // Second column: favorite items
+               String phoneNum = row.get(2);  // Third column: phone number
+               String role = row.get(3); 
+
+               // Print each piece of information on a new line
+               System.out.println("---------");
+               System.out.println("INFORMATION");
+               System.out.println("User: " + authorisedUser);
+               System.out.println("Password: " + password);
+               System.out.println("Favorite Item: " + favoriteItems);
+               System.out.println("Phone Number: " + phoneNum);
+               if(!role.trim().equals("customer")){
+                  System.out.println("Role: " + role);
+               }
+               System.out.println();  // Adds a blank line for separation between records
+            } */
       catch(Exception e){
          System.err.println(e.getMessage());
       }   
@@ -875,11 +943,40 @@ public class PizzaStore {
                                  + orderTimestamp.toString() + "')";
                         System.out.println(query2);
                         //Get the orderID
+                         /* String query = "SELECT orderID FROM FoodOrder WHERE login = '" + authorisedUser + "' " +
+                                 "AND storeID = '" + storeIDChoice + "' " +
+                                 "AND totalPrice = " + finalPrice + " " + 
+                                 "AND orderTimestamp = '" + orderTimestamp.toString() + "'"; */
                         String query = "SELECT * FROM FoodOrder WHERE login = '"+authorisedUser.trim()+"'";
                         List<List<String>> selectedOrderID = esql.executeQueryAndReturnResult(query);
                         //String StringselectedOrderID = selectedOrderID.get(0).get(0);
                         System.out.println("---------");
                         System.out.println(selectedOrderID);
+
+
+/*                         for (ArrayList<String> order : OrderArrayOfArrays) {
+                        String quantitySummary = order.get(0);  // Get the first element (quantity)
+                        String itemSummary = order.get(1); // Get the second element (item)
+                        String query3 = "INSERT INTO ItemsInOrder (quantity, itemName, orderID) VALUES (" +
+                                          quantitySummary + ", '" + itemSummary + "', '" + selectedOrderID + "')";
+                        //INSERT INTO ItemsInOrder
+                        esql.executeQuery(query3);
+                        System.out.println(query3);
+
+                        }
+
+                        
+                        //Execute query
+                        //INSERT INTO FoodOrder
+		                  esql.executeQuery(query2);
+                       
+                        //Check correct insertion (check ID)
+
+                        query2 = "SELECT * FROM FoodOrder";
+                        List<List<String>> allfoodorders = esql.executeQueryAndReturnResult(query2);
+                        System.out.println(allfoodorders);  */
+
+
                      }else{
                         System.out.println("Invalid choice!");
                      }
@@ -887,6 +984,10 @@ public class PizzaStore {
                   }
                   
                }
+              
+               
+
+
                invalidInput = false;
             }else{
                System.out.println("Invalid option!");
@@ -1055,32 +1156,7 @@ public class PizzaStore {
    }
 
    public static void updateOrderStatus(PizzaStore esql) {
-      try{
-         String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "'";
-         List<List<String>> output = esql.executeQueryAndReturnResult(query);
-         System.out.println(output.get(0).get(0));
-         if(output.get(0).get(0).trim().equals("manager") || output.get(0).get(0).trim().equals("driver")){
-               System.out.println("---------");
-               System.out.println("Select the ID of the order you want to update");
-               String choice2 = in.readLine();
-               query = "SELECT * FROM FoodOrder WHERE orderID = '"+choice2+"'";
-               if(esql.executeQuery(query) == 0){
-                  System.out.println("That order does not exist");
-               }else{
-                  System.out.println("What is the new status of the order?");
-                  String newStatus = in.readLine();
-                  query = "UPDATE FoodOrder SET orderStatus = '"+newStatus+"' WHERE orderID = '"+choice2+"'";
-                  esql.executeUpdate(query);
-               }
-
-         }else{
-             //A non manager tries to enter
-            System.out.println("Unauthorised");           
-         }
-      }catch(Exception e){
-         System.err.println(e.getMessage());
-      }
-
+//TO DO (easy)
    }
    public static void updateMenu(PizzaStore esql) {
       try{
@@ -1123,8 +1199,8 @@ public class PizzaStore {
                   query = "UPDATE Items SET ingredients = '"+newName+"' WHERE itemName = '"+choice2+"'";
                   String query2 = "UPDATE ItemsInOrder SET ingredients = '"+newName+"' WHERE itemName = '"+choice2+"'";
                   //Aparently the old name is not updated, but the new name added as well.
-                  esql.executeUpdate(query);
-                  esql.executeUpdate(query2);
+                  esql.executeQuery(query);
+                  esql.executeQuery(query2);
                   validInput = false;
                }else if(input == 3){
                   System.out.println("Choose new category for "+choice2);
@@ -1141,8 +1217,8 @@ public class PizzaStore {
                   query = "UPDATE Items SET price = '"+newName+"' WHERE itemName = '"+choice2+"'";
                   String query2 = "UPDATE ItemsInOrder SET price = '"+newName+"' WHERE itemName = '"+choice2+"'";
                   //Aparently the old name is not updated, but the new name added as well.
-                  esql.executeUpdate(query);
-                  esql.executeUpdate(query2);
+                  esql.executeQuery(query);
+                  esql.executeQuery(query2);
                   validInput = false;
                }else if(input == 5){
                   System.out.println("Choose new description for "+choice2);
@@ -1150,8 +1226,8 @@ public class PizzaStore {
                   query = "UPDATE Items SET description = '"+newName+"' WHERE itemName = '"+choice2+"'";
                   String query2 = "UPDATE ItemsInOrder SET description = '"+newName+"' WHERE itemName = '"+choice2+"'";
                   //Aparently the old name is not updated, but the new name added as well.
-                  esql.executeUpdate(query);
-                  esql.executeUpdate(query2);
+                  esql.executeQuery(query);
+                  esql.executeQuery(query2);
                   validInput = false;
                }else if(input == 6){
                   System.out.println("Choose an item name");
@@ -1189,11 +1265,7 @@ public class PizzaStore {
       }
    }
 
-   public static void updateUser(PizzaStore esql) {
-      //The functionality of this method was implemented inside the method updateProfile.
-      //Inside updateProfile, if you have the permission to do so, you can update either your
-      //own profile or the profile of an existing user inside the DB.
-   }
+   public static void updateUser(PizzaStore esql) {}
 
 
 }//end PizzaStore

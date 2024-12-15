@@ -1,0 +1,16 @@
+DROP SEQUENCE IF EXISTS orderID_seq;
+CREATE SEQUENCE orderID_seq START WITH 1;
+
+CREATE OR REPLACE LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION myfun() RETURNS trigger AS $myfun$
+BEGIN
+    NEW.orderID := nextval('orderID_seq');
+    RETURN NEW;
+    END;
+$myfun$ LANGUAGE plpgsql VOLATILE;
+
+DROP TRIGGER IF EXISTS mytrigger ON FoodOrder;
+
+CREATE TRIGGER mytrigger BEFORE INSERT ON FoodOrder
+FOR EACH ROW
+EXECUTE PROCEDURE myfun();
